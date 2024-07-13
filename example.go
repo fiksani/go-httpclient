@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	githubHttpClient = gohttp.New()
+	githubHttpClient = getGithubHttpClient()
 )
 
 func getGithubHttpClient() gohttp.HttpClient {
@@ -23,18 +23,29 @@ func getGithubHttpClient() gohttp.HttpClient {
 
 func main() {
 	getUrls()
-	getUrls()
-	getUrls()
-	getUrls()
+}
+
+type User struct {
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
 }
 
 func getUrls() {
 	//headers := make(http.Header)
 	//headers.Set("Authorization", "Bearer abc123")
 
-	githubHttpClient := getGithubHttpClient()
-
 	response, err := githubHttpClient.Get("https://api.github.com", nil)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(response.StatusCode)
+	bytes, _ := io.ReadAll(response.Body)
+	fmt.Println(string(bytes))
+}
+
+func createUser(user User) {
+	response, err := githubHttpClient.Post("https://api.github.com", nil, user)
 	if err != nil {
 		panic(err)
 	}
