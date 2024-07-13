@@ -6,10 +6,35 @@ import (
 	"io"
 )
 
-func main() {
+var (
+	githubHttpClient = gohttp.New()
+)
+
+func getGithubHttpClient() gohttp.HttpClient {
 	client := gohttp.New()
 
-	response, err := client.Get("https://api.github.com", nil)
+	//commonHeaders := make(http.Header)
+	//commonHeaders.Set("Authorization", "Bearer abc123")
+	//
+	//client.SetHeaders(commonHeaders)
+
+	return client
+}
+
+func main() {
+	getUrls()
+	getUrls()
+	getUrls()
+	getUrls()
+}
+
+func getUrls() {
+	//headers := make(http.Header)
+	//headers.Set("Authorization", "Bearer abc123")
+
+	githubHttpClient := getGithubHttpClient()
+
+	response, err := githubHttpClient.Get("https://api.github.com", nil)
 	if err != nil {
 		panic(err)
 	}
